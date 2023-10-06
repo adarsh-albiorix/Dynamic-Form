@@ -1,51 +1,52 @@
 <template>
-  <!-- <v-container> -->
-  <v-card image="../assets/bg.jpg" flat height="700">
-    <template class="d-flex justify-center">
-      <div>
-        <v-btn
-          class="mt-16"
-          icon="mdi-plus"
-          color="blue-grey"
-          @click="navigateToEditPage"
-        >
-        </v-btn>
-      </div>
-      <div>
-        <v-card-title class="mt-16 label" style="font-size: xx-large"
-          >Click the button to Add the form</v-card-title
-        >
-      </div>
-    </template>
+  <v-card image="../assets/bg.jpg" flat height="1000">
+    <transition name="fade" mode="out-in">
+      <span v-if="show" class="d-flex justify-center">
+        <div>
+          <v-btn
+            class="mt-16"
+            icon="mdi-plus"
+            color="blue-grey"
+            @click="navigateToEditPage"
+          >
+          </v-btn>
+        </div>
+        <div>
+          <v-card-title class="mt-16 label" style="font-size: xx-large"
+            >Click the button to Add the form</v-card-title
+          >
+        </div>
+      </span>
+    </transition>
+
     <template class="d-flex justify-center mt-16">
       <div class="step-content card-color">
         <transition name="fade" mode="out-in">
           <component
             height=""
-            :is="Forms[currentFormNumber]"
-            :key="currentFormNumber"
+            :is="Forms[store.currentFormNumber]"
+            :key="store.currentFormNumber"
           />
-          <!-- @validation="handleEvents"
-                  @Data="handleData" -->
         </transition>
       </div>
     </template>
   </v-card>
-  <!-- </v-container> -->
 </template>
 
 <script setup>
-import { ref, reactive, markRaw } from "vue";
-import { useRouter } from "vue-router";
+import { reactive, markRaw, ref } from "vue";
+import { useStore } from "../store/app";
 import FormName from "./FormName.vue";
+import AddQuestions from "./AddQuestions.vue";
 
-const router = useRouter();
-const currentFormNumber = ref(0);
+const store = useStore();
+const show = ref(true);
 
-const Forms = reactive([markRaw(FormName)]);
+const Forms = reactive([markRaw(FormName), markRaw(AddQuestions)]);
 
 function navigateToEditPage() {
-  router.push("/edit");
+  store.currentFormNumber = 0;
+  show.value = false;
 }
 </script>
 <style scoped>
