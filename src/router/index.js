@@ -8,7 +8,7 @@ const routes = [
   },
   {
     path: "/edit",
-    component: () => import("@/components/EditingPage.vue"),
+    component: () => import("@/components/FormName.vue"),
   },
 ];
 
